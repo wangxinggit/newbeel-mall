@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>TT mall-register</title>
+    <link rel="stylesheet" th:href="@{mall/css/common.css}">
+    <link rel="stylesheet" th:href="@{mall/styles/login.css}">
+    <link rel="stylesheet" th:href="@{mall/styles/header.css}">
+    <link rel="stylesheet" th:href="@{/admin/plugins/sweetalert/sweetalert.css}"/>
+</head>
+<body>
+<div class="top center">
+  <div class="logo center">
+    <!--<a href="./index.html" target="_blank"><img src="mall/image/login-logo-2.png" alt=""></a>-->
+    <a href="./index.html"><img src="mall/image/logo.png" alt=""></a>
+  </div>
+</div>
+
+<div class="form center">
+  <div class="login">
+    <div class="login_center">
+      <div class="login_top">
+        <div class="left fl">Sign up</div>
+        <div class="right fr">Already have an account？<a href="login.html" target="_self">Please login</a></div>
+        <div class="clear"></div>
+        <div class="under-line center"></div>
+      </div>
+      <form id="registerForm" onsubmit="return false;" action="##">
+        <div class="login_main center">
+          <div class="login-info">
+            <span>*Phone</span>
+            <input class="login-info-input" type="text" name="loginName" placeholder="Please enter your mobile number" id="loginName"/>
+          </div>
+          <div class="login-info">
+            <span>*Password</span>
+            <input class="login-info-input" type="password" name="password" id="password" placeholder="Please enter your password"/>
+          </div>
+          <div class="login-info">
+            <span>PIN</span>
+            <input class="login-info-input verify-code" type="text" name="verifyCode" id="verifyCode"
+                   placeholder="please enter verification code"/>
+            <img alt="Click picture refresh!" th:src="@{/common/mall/kaptcha}"
+                 onclick="this.src='/common/mall/kaptcha?d='+new Date()*1">
+          </div>
+        </div>
+        <div class="login_submit">
+          <input class="submit" type="button" onclick="register()" value="Register">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+<!-- jQuery -->
+<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
+<script th:src="@{/admin/dist/js/public.js}"></script>
+<script th:src="@{/admin/plugins/sweetalert/sweetalert.min.js}"></script>
+<script type="text/javascript">
+
+    //部署时未开发注册方法
+    function register2() {
+        swal('please contact the author for a test account', {
+            icon: "error",
+        });
+    }
+
+    //注册按钮onclick事件改为register()即可
+    function register() {
+        var loginName = $("#loginName").val();
+        if (!validPhoneNumber(loginName)) {
+            swal('Please enter the correct login name', {
+                icon: "error",
+            });
+            return false;
+        }
+        var password = $("#password").val();
+        if (!validPassword(password)) {
+            swal('Please enter the correct password format (6-20 characters and numbers)', {
+                icon: "error",
+            });
+            return false;
+        }
+        var verifyCode = $("#verifyCode").val();
+        if (!validLength(verifyCode, 7)) {
+            swal('Please enter correct verify code', {
+                icon: "error",
+            });
+            return false;
+        }
+        //验证
+        var params = $("#registerForm").serialize();
+        var url = '/register';
+        $.ajax({
+            type: 'POST',//方法类型
+            url: url,
+            data: params,
+            success: function (result) {
+                if (result.resultCode == 200) {
+                    swal({
+                        title: "registration success",
+                        text: "Whether to jump to the login page?",
+                        icon: "success",
+                        buttons: true,
+                        dangerMode: true,
+                    }).then((flag) => {
+                        if(flag) {
+                            window.location.href = '/login';
+                        }
+                    }
+                )
+                } else {
+                    swal(result.message, {
+                        icon: "error",
+                    });
+                }
+            },
+            error: function () {
+                swal("operation failed\n", {
+                    icon: "error",
+                });
+            }
+        });
+    }
+</script>
+</html>

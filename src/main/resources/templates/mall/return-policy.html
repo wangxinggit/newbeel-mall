@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>return-policy</title>
+  <link rel="stylesheet" th:href="@{mall/css/iconfont.css}">
+  <link rel="stylesheet" th:href="@{mall/css/common.css}">
+  <link rel="stylesheet" th:href="@{mall/styles/header.css}">
+  <link rel="stylesheet" th:href="@{mall/styles/return-policy.css}">
+  <link rel="stylesheet" th:href="@{/admin/plugins/sweetalert/sweetalert.css}"/>
+  <link rel="stylesheet" th:href="@{mall/css/reset.css}">
+</head>
+<body>
+
+<div id="cart">
+  <div class="top center">
+    <div class="logo center">
+      <!--<a href="./index.html" target="_blank"><img src="mall/image/login-logo-2.png" alt=""></a>-->
+      <a href="./index.html"><img src="mall/image/logo.png" alt=""></a>
+      <div class="fr">
+        <th:block th:unless="${session.newBeeMallUser==null}">
+          <div class="user">
+            <ul class="selector">
+              <li>
+                <a th:href="@{/personal}">
+                  My account
+                </a>
+              </li>
+              <li>
+                <a th:href="@{/orders}">
+                  View Orders
+                </a>
+              </li>
+              <li>
+                <a th:href="@{/logout}">
+                  Logout
+                </a>
+              </li>
+            </ul>
+            <a href="##" class="username">
+              <th:block th:text="${session.newBeeMallUser.nickName}"></th:block>
+              <i class="iconfont icon-down"></i>
+            </a>
+          </div>
+          <div class="shopcart">
+            <a th:href="@{/shop-cart}" style="color: white;"><i class="iconfont icon-cart"></i>
+              Cart (
+              <th:block th:text="${session.newBeeMallUser.shopCartItemCount}"></th:block>
+              )</a>
+          </div>
+        </th:block>
+        <th:block th:if="${session.newBeeMallUser==null}">
+          <ul class="login">
+            <li><a th:href="@{/login}">Sign in</a></li>
+            <li><a th:href="@{/register}">Sign up</a></li>
+          </ul>
+          <div class="shopcart">
+            <a href="##" style="color: white;"><i class="iconfont icon-cart"></i>
+              Cart (0)</a>
+          </div>
+        </th:block>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="fixed_layout">
+      <h3 class="p_txt">EXCHANGE POLICY</h3>
+      <div class="box_layout">
+        <div>
+          <b>EXCHANGE (DISCRETIONARY)</b>
+          <p>We are unable to exchange items unless they are defective or damaged. Send us an email with product images
+            , within 48 hours of receipt to initiate an exchange process. If your claim is
+            approved, we'll follow up and get the exchange done.</p>
+        </div>
+        <div>
+          <b>FREQUENTLY ASKED QUESTIONS</b>
+          <p>1. It's been two months since I received my messenger bag, but don't feel like it's right for me. It's
+            still unused. May I return it?</p>
+          <p>Our exchange policy stipulates a 48 hours period from the receipt of the product and again only if the
+            product is defective/damaged</p>
+          <p>2. I'm saving up to buy a car. Couldn't you take care of the shipping costs of a return for me?</p>
+          <p>Sorry, all shipping costs are non-refundable, and any returns are on you. However, the good news is that if
+            we approve an exchange owing to item defect or damage, we take care of the shipping costs of you sending it
+            back to us as well as the new exchange item. We're not all bad.</p>
+          <p>3. I shipped my item to you for store credit, but I've been told the item never reached. What do I do if my
+            exchanged is lost?</p>
+          <p>Sadly, in that case, there's little one can but moan. We recommend using a traceable shipping method to
+            help prevent this and/or insuring your package for an additional fee. We cannot guarantee that we will
+            receive your exchanged item.</p>
+          <p>4. A strap on my fairly-new tote bag appears to have frayed. Would you repair it for me?</p>
+          <p>Has your pup had a go at it? If the tear were a production defect and not a case of canine abuse, we'd have
+            been happy to take care of an exchange for you. However, any order that arrives damaged must be reported
+            within 48 hours of receipt.</p>
+          <p>5. I was approved for an exchange. However, it's been four weeks and there's no signs of my new duffle. Did
+            my postman make away with it?</p>
+          <p>We doubt it. Our products are designed and manufactured in India. Depending on where you live, the time it
+            may take for your exchange to reach you will vary. But however it's always advisable to keep the tracking
+            number with you and follow up with the delivery service.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div th:replace="mall/footer::footer-fragment"></div>
+
+</body>
+<!-- jQuery -->
+<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
+<script th:src="@{/admin/plugins/sweetalert/sweetalert.min.js}"></script>
+
+</html>

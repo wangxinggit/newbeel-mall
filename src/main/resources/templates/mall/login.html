@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>TT mall-login</title>
+    <link rel="stylesheet" th:href="@{mall/css/common.css}">
+    <link rel="stylesheet" th:href="@{mall/styles/login.css}">
+    <link rel="stylesheet" th:href="@{mall/styles/header.css}">
+    <link rel="stylesheet" th:href="@{/admin/plugins/sweetalert/sweetalert.css}"/>
+</head>
+<body>
+<div class="top center">
+  <div class="logo center">
+    <a href="./index.html"><img src="mall/image/logo.png" alt=""></a>
+  </div>
+</div>
+<div class="form center">
+  <div class="login">
+    <div class="login_center">
+      <div class="login_top">
+        <div class="left fl">Sign in</div>
+        <div class="right fr">You are not a member of us? <a href="register.html" target="_self">Register</a></div>
+        <div class="clear"></div>
+        <div class="under-line center"></div>
+      </div>
+      <form id="loginForm" onsubmit="return false;" action="##">
+        <div class="login_main center">
+          <div class="login-info">
+            <span>*Phone</span>
+            <input class="login-info-input" type="text" name="loginName" id="loginName" placeholder="Please enter your mobile number"/>
+          </div>
+          <div class="login-info">
+            <span>*Password</span>
+            <input class="login-info-input" id="password" type="password" name="password" placeholder="Please enter your password"/>
+          </div><div class="login-info">
+            <span>PIN</span>
+            <input class="login-info-input verify-code" type="text" name="verifyCode"
+                   placeholder="please enter verification code" id="verifyCode"/>
+            <img alt="Click picture refresh!" th:src="@{/common/mall/kaptcha}"
+                 onclick="this.src='/common/mall/kaptcha?d='+new Date()*1"/>
+          </div>
+        </div>
+        <div class="login_submit">
+          <input class="submit" type="submit" onclick="login()" value="Sign in">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+<!-- jQuery -->
+<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
+<script th:src="@{/admin/dist/js/public.js}"></script>
+<script th:src="@{/admin/plugins/sweetalert/sweetalert.min.js}"></script>
+<script type="text/javascript">
+    function login() {
+        var loginName = $("#loginName").val();
+        if (!validPhoneNumber(loginName)) {
+            swal('Please enter the correct login name', {
+                icon: "error",
+            });
+            return false;
+        }
+        var password = $("#password").val();
+        if (!validPassword(password)) {
+            swal('Please enter the correct password format (6-20 characters and numbers)', {
+                icon: "error",
+            });
+            return false;
+        }
+        var verifyCode = $("#verifyCode").val();
+        if (!validLength(verifyCode, 7)) {
+            swal('Please enter correct verify code', {
+                icon: "error",
+            });
+            return false;
+        }
+        var params = $("#loginForm").serialize();
+        var url = '/login';
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: params,
+            success: function (result) {
+                if (result.resultCode == 200) {
+                    window.location.href = '/index';
+                } else {
+                    swal(result.message, {
+                        icon: "error",
+                    });
+                }
+            },
+            error: function () {
+                swal("operation failed", {
+                    icon: "error",
+                });
+            }
+        });
+    }
+</script>
+</html>
