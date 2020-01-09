@@ -59,4 +59,15 @@ public class IndexController {
         return "mall/privacy-policy";
     }
 
+    @RequestMapping(value = "/paySuccess")
+    public Object  paySuccess(){
+
+        return "mall/pay-success";
+    }
+    @RequestMapping(value = "/payFail")
+    public Object  payFail(){
+
+        return "mall/pay-fail";
+    }
+
 }
