@@ -37,8 +37,12 @@
                         <ul class="clearfix payment-list J_paymentList J_linksign-customize">
                             <li class="J_alipay">
                                 <!--onclick="payOrder(1)" -->
-                                <input type="radio" name="payOnlineBank" id="alipay" value="alipay">
-                                <img th:src="@{/mall/image/pay/paytm.jpg}" alt="paytm"></li>
+                                <input type="radio" name="payOnlineBank" value="paytmpay">
+                                <img th:src="@{/mall/image/pay/paytmpay.jpg}" alt="paytm"></li>
+                            <li class="J_alipay">
+                                <!--onclick="payOrder(1)" -->
+                                <input type="radio" name="payOnlineBank" value="upipay">
+                                <img th:src="@{/mall/image/pay/upipay.png}" alt="upi"></li>
                             <!--<li class="J_alipay">-->
                                 <!--<input type="radio" name="payOnlineBank" id="alipay" value="alipay">-->
                                 <!--<img onclick="payOrder(1)" th:src="@{/mall/image/pay/payOnline_zfb.png}" alt="支付宝"-->
@@ -153,6 +157,7 @@
             </div>
         </form>
     </div>
+    <div id="payBox" class="hide"></div>
 </div>
 
 <div th:replace="mall/footer::footer-fragment"></div>
@@ -170,12 +175,72 @@
         $(this).addClass('curr').siblings().removeClass('curr');
     });
 
+    function payReady(form) {
+        // console.log(form);
+        var el = document.getElementById("ttmallPay");
+        if (!el) {
+            var div = document.createElement("div");
+            div.setAttribute("id", "ttmallPay");
+            div.style.display = "none";
+            div.innerHTML = form;
+            document.body.appendChild(div);
+        } else el.innerHTML = form;
+        //提交
+        setTimeout(function(){
+            var forms = document.forms["paytm"];
+            if (forms.length > 0)
+                forms.submit();
+        },10)
+    }
+
     function payfor(){
+        var lens = $('li.J_alipay.curr').length;
+        if(lens == 0){
+            swal({
+                text: "Please select mode of payment",
+                icon: "warning"
+            });
+            return;
+        }
         swal({
             text: "Confirm to pay?",
             icon: "info",
             buttons: ["Cancel","Confirm"]
+        }).then((flag) => {
+            console.log(flag);
+            if (flag) {
+                $.ajax({
+                    type: "POST",
+                    url: "/pay/orderPay",
+                    contentType: "application/json",
+                    data: {}, //参数
+                    success: function (res) {
+                        console.log(res);
+                        if (res.resultCode == 200) {
+                            var data = res.data;
+                            swal({
+                                text: "Please wait for payment"
+                            });
+                            this.payReady(data.webPage);
+                            // swal("pay successful", {
+                            //     icon: "success",
+                            // });
+                        } else {
+                            swal('pay error', {
+                                icon: "error",
+                            });
+                        }
+                    },
+                    error:function(err){
+                        swal('pay error', {
+                            icon: "error",
+                        });
+                    }
+                });
+            }
         });
+
+       // window.location.href = '/orders';
     }
 
     function payOrder(payType) {

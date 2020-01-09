@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>privacy-policy</title>
+  <link rel="stylesheet" th:href="@{mall/css/iconfont.css}">
+  <link rel="stylesheet" th:href="@{mall/css/common.css}">
+  <link rel="stylesheet" th:href="@{mall/styles/header.css}">
+  <link rel="stylesheet" th:href="@{mall/styles/pay-success.css}">
+  <link rel="stylesheet" th:href="@{/admin/plugins/sweetalert/sweetalert.css}"/>
+  <link rel="stylesheet" th:href="@{mall/css/reset.css}">
+</head>
+<body>
+
+<div id="cart">
+  <div class="top center">
+    <div class="logo center">
+      <a href="./index.html"><img src="mall/image/logo.png" alt=""></a>
+    </div>
+  </div>
+  <div class="container">
+    <div class="fixed_layout">
+      <div class="box_layout text-center">
+        <p>
+          <img class="vertical-center" src="mall/image/error.png" alt="">
+          Payment failed !
+        </p>
+        <p>
+            <span class="btn">
+              <a href="./index.html">continue shopping</a>
+            </span>
+          <span class="btn">
+              <a  th:href="@{/orders}">view Orders</a>
+            </span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div th:replace="mall/footer::footer-fragment"></div>
+
+</body>
+<!-- jQuery -->
+<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
+<script th:src="@{/admin/plugins/sweetalert/sweetalert.min.js}"></script>
+</html>

@@ -205,8 +205,8 @@ dl, menu, ol, ul {
     cursor: pointer;
     overflow: hidden;
     _zoom: 1;
-    -webkit-transition: all .4s;
-    transition: all .4s;
+    -webkit-transition: all .4s ease;
+    transition: all .4s ease;
 }
 
 .payment-box-last {
